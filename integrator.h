@@ -4,10 +4,8 @@
 #include "domain.h"
 #include <QObject>
 #include <QVector>
-#include <boost/numeric/odeint.hpp>
-using namespace boost::numeric::odeint;
-namespace pl = std::placeholders;
-typedef QVector<c> state_type;
+#include <vector>
+using std::vector;
 
 class Wavefunction;
 class Integrator : public QObject
@@ -19,11 +17,11 @@ class Integrator : public QObject
     Q_PROPERTY(IntegrationScheme scheme READ scheme WRITE setScheme NOTIFY schemeChanged)
     Q_PROPERTY(double dt READ dt WRITE setDt NOTIFY dtChanged)
     Q_PROPERTY(Domain* domain READ domain WRITE setDomain NOTIFY domainChanged)
+    Q_PROPERTY(int speed READ speed WRITE setSpeed NOTIFY speedChanged)
 public:
     enum IntegrationScheme {
         FORWARD_EULER = 0,
-        BACKWARD_EULER = 1,
-        BOOST_ODE = 2
+        BACKWARD_EULER = 1
     };
     Q_ENUMS(IntegrationScheme)
 private:
@@ -34,18 +32,18 @@ private:
     QVector<c> m_l;
     QVector<c> m_v;
     QVector<c> m_oneOverV;
-    QVector<c> m_newWaveFunction;
-    void rhs(const state_type &x, state_type &dxdt, double t);
-    void callback(const state_type &x, const double t);
+    vector<c> m_newWaveFunction;
     double m_mass = 1.0;
     double m_dt = 0.01;
+    int m_speed = 1;
     bool m_dirty = true;
-    IntegrationScheme m_scheme = FORWARD_EULER;
+    IntegrationScheme m_scheme = BACKWARD_EULER;
 
     void forwardEuler();
     void backwardEuler();
     void eulerChromer();
     void createLU();
+
 
 public:
     double mass() const;
@@ -54,6 +52,7 @@ public:
     QVector<double> potential() const;
     IntegrationScheme scheme() const;
     Domain* domain() const;
+    int speed() const;
 
 signals:
     void wavefunctionChanged(Wavefunction* wavefunction);
@@ -62,6 +61,7 @@ signals:
     void schemeChanged(IntegrationScheme scheme);
     void dtChanged(double dt);
     void domainChanged(Domain* domain);
+    void speedChanged(int speed);
 
 public slots:
     void setWavefunction(Wavefunction* wavefunction);
@@ -72,6 +72,7 @@ public slots:
     void setDt(double dt);
     void setDomain(Domain* domain);
     void markDirty();
+    void setSpeed(int speed);
 };
 
 #endif // INTEGRATOR_H

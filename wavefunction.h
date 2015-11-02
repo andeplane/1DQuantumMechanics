@@ -1,9 +1,11 @@
 #ifndef WAVEFUNCTION_H
 #define WAVEFUNCTION_H
 #include <QVector>
+#include <vector>
 #include "include.h"
 #include "linegraph.h"
 #include "domain.h"
+using std::vector;
 class Wavefunction : public LineGraphDataSource
 {
     Q_OBJECT
@@ -12,7 +14,7 @@ private:
     Domain* m_domain = nullptr;
 
 public:
-    QVector<c> values;
+    vector<c> values;
     Wavefunction();
     void initGauss(double x0, double stddev);
     void updateProbabilityDistribution();

@@ -11,13 +11,12 @@ Wavefunction::Wavefunction()
 
 void Wavefunction::initGauss(double x0, double stddev)
 {
-    qDebug() << "Initializing gauss";
     for(int i=0; i<m_domain->steps(); i++) {
         double x = m_domain->xMin() + i*m_domain->deltaX();
         values[i] = exp(-(x - x0)*(x - x0)/(2.0*stddev));
     }
-    values.first() = 0;
-    values.last() = 0;
+    values.front() = 0;
+    values.back() = 0;
 }
 
 void Wavefunction::updateProbabilityDistribution()
@@ -47,7 +46,7 @@ void Wavefunction::reset() {
     // qDebug() << "Reset wavefunction";
 
     values.resize(m_domain->steps());
-    double x0 = m_domain->midpoint();
+    double x0 = m_domain->center();
     double standardDeviation = 0.005*m_domain->range();
     initGauss(x0, standardDeviation);
     updateProbabilityDistribution();

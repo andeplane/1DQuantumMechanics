@@ -35,7 +35,7 @@ public:
         return (m_xMax - m_xMin) / (m_steps-1);
     }
 
-    double midpoint() const
+    double center() const
     {
         return 0.5*(m_xMax + m_xMin);
     }
