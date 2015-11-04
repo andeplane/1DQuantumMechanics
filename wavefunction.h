@@ -6,12 +6,14 @@
 #include "linegraph.h"
 #include "domain.h"
 using std::vector;
-class Wavefunction : public LineGraphDataSource
+class Wavefunction : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(Domain* domain READ domain WRITE setDomain NOTIFY domainChanged)
+    Q_PROPERTY(LineGraphDataSource* dataSource READ dataSource NOTIFY dataSourceChanged)
 private:
     Domain* m_domain = nullptr;
+    LineGraphDataSource m_dataSource;
 
 public:
     vector<c> values;
@@ -20,12 +22,15 @@ public:
     void updateProbabilityDistribution();
     c operator[](int index) { return values[index]; }
     Domain* domain() const;
+    LineGraphDataSource* dataSource();
+
 public slots:
     void setDomain(Domain* domain);
     void reset();
 
 signals:
     void domainChanged(Domain* domain);
+    void dataSourceChanged(LineGraphDataSource *dataSource);
 };
 
 #endif // WAVEFUNCTION_H

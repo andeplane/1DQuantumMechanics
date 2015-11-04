@@ -6,7 +6,7 @@ using std::cout; using std::endl;
 
 Wavefunction::Wavefunction()
 {
-    m_saveMemory = false;
+    m_dataSource.setSaveMemory(false);
 }
 
 void Wavefunction::initGauss(double x0, double stddev)
@@ -21,24 +21,26 @@ void Wavefunction::initGauss(double x0, double stddev)
 
 void Wavefunction::updateProbabilityDistribution()
 {
-    // qDebug() << "Updating proability distribution";
-    m_points.resize(m_domain->steps());
+    QVector<QPointF> &points = m_dataSource.points();
+    points.resize(m_domain->steps());
 
-    // cout << "P(x) = [";
     for(int i=0; i<m_domain->steps(); i++) {
         // P(x) = |Psi|^2
         double x = m_domain->xMin() + i*m_domain->deltaX();
         double P = values[i].real()*values[i].real() + values[i].imag()*values[i].imag();
-        m_points[i] = QPointF(x, P);
-        // cout << P << " ";
+        points[i] = QPointF(x, P);
     }
-    // cout << "]" << endl;
-    emit dataChanged();
+    emit m_dataSource.dataChanged();
 }
 
 Domain *Wavefunction::domain() const
 {
     return m_domain;
+}
+
+LineGraphDataSource *Wavefunction::dataSource()
+{
+    return &m_dataSource;
 }
 
 void Wavefunction::reset() {

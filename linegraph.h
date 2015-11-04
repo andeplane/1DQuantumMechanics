@@ -19,6 +19,7 @@ public:
     QPointF get(int index) { return m_points[index+m_firstIndex*m_saveMemory]; }
     int size();
     bool saveMemory() const;
+    QVector<QPointF> &points();
 
 public slots:
     void setSaveMemory(bool saveMemory);

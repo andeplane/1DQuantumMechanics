@@ -21,7 +21,7 @@ Window {
             yMax: 0.1
 
             LineGraph {
-                dataSource: wavefunction
+                dataSource: wavefunction.dataSource
             }
 
             Button {
@@ -63,7 +63,7 @@ Window {
             id: myDomain
             xMin: 0
             xMax: 100
-            steps: 4096
+            steps: 1024
         }
         scheme: Integrator.BACKWARD_EULER
     }

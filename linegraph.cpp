@@ -153,6 +153,11 @@ bool LineGraphDataSource::saveMemory() const
     return m_saveMemory;
 }
 
+QVector<QPointF> &LineGraphDataSource::points()
+{
+    return m_points;
+}
+
 void LineGraphDataSource::setSaveMemory(bool saveMemory)
 {
     if (m_saveMemory == saveMemory)
